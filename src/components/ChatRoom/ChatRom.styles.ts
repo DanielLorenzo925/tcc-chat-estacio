@@ -85,16 +85,17 @@ export const ButtonRollDown = styled.button`
   gap: 5px;
   animation-duration: 0.5s;
   animation-name: animate-pop;
-  animation-timing-function: cubic-bezier(.26, .53, .74, 1.48);
+  animation-timing-function: cubic-bezier(0.26, 0.53, 0.74, 1.48);
   @keyframes animate-pop {
-  0% {
-    opacity: 0;
-    transform: scale(0.5, 0.5);
-  }
+    0% {
+      opacity: 0;
+      transform: scale(0.5, 0.5);
+    }
 
-  100% {
-    opacity: 1;
-    transform: scale(1, 1);
+    100% {
+      opacity: 1;
+      transform: scale(1, 1);
+    }
   }
 `;
 
