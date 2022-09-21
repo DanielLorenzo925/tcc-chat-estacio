@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "firebase/auth";
 import "firebase/analytics";
 import ChatMessage from "../ChatMessage/ChatMessage";
@@ -7,6 +7,8 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import { Query } from "@firebase/firestore-types";
+import * as S from "./ChatRom.styles";
+import SignOut from "../SignOut/SignOut";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4I48BMsJ0sXj5LmPVSmWJHwwpZxSgyco",
@@ -21,50 +23,46 @@ const firestore = firebase.firestore();
 const auth = firebase.auth();
 
 export default function ChatRoom() {
-  const dummy = useRef();
-  const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(25);
-
-  const [messages] = useCollectionData(query, { idField: "id" });
-
   const [formValue, setFormValue] = useState("");
+  const dummy = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const messagesRef = firestore.collection("messages");
+  const query = messagesRef.orderBy("createdAt").limit(10000);
+  const [messages] = useCollectionData(query, { idField: "id" });
 
   const sendMessage = async (e: any) => {
     e.preventDefault();
-
     const uid = auth.currentUser?.uid;
-    const photoURL = auth.currentUser?.photoURL;
-
+    const photoURL = `https://robohash.org/${auth.currentUser?.uid}&200x200`;
     await messagesRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
       photoURL,
     });
-
+    dummy.current.scrollIntoView({ behavior: "smooth" });
     setFormValue("");
   };
 
   return (
-    <div className="Wrapper">
-      <div
-        style={{
-          width: "100%",
-          marginLeft: "18px",
-          backgroundColor: "aquamarine",
-          height: "50px",
-          display: "flex",
-          border: "1px solid black",
-        }}
-      ></div>
-      <main>
+    <S.Wrapper>
+      <S.StyledDiv>
+        {" "}
+        <SignOut />
+        <button
+          onClick={() => {
+            dummy.current.scrollIntoView({ behavior: "auto" });
+          }}
+        ></button>
+      </S.StyledDiv>
+      <S.Main>
         {messages &&
           messages.map((msg: any) => (
             <ChatMessage key={msg.id} message={msg} />
           ))}
-      </main>
+        <div ref={dummy}></div>
+      </S.Main>
 
-      <form onSubmit={sendMessage}>
+      <S.FormWrapper onSubmit={sendMessage}>
         <input
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
@@ -74,7 +72,7 @@ export default function ChatRoom() {
         <button type="submit" disabled={!formValue}>
           Enviar
         </button>
-      </form>
-    </div>
+      </S.FormWrapper>
+    </S.Wrapper>
   );
 }
