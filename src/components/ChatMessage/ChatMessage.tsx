@@ -12,7 +12,6 @@ const auth = firebase.auth();
 export default function ChatMessage(props: any) {
   const { text, uid, photoURL } = props.message;
 
-  const messageClass = uid === auth.currentUser?.uid ? "sent" : "received";
   //TODO: RESOLVER ESSA BAGAÇA;
   console.log(uid);
   console.log(auth.currentUser?.uid);

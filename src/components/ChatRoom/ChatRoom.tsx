@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import "firebase/auth";
 import "firebase/analytics";
-import ChatMessage from "../ChatMessage/ChatMessage";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { Query } from "@firebase/firestore-types";
-import * as S from "./ChatRom.styles";
+import { useRef, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import ChatMessage from "../ChatMessage/ChatMessage";
+import Icon from "@mdi/react";
+import useOnScreen from "../../Shared/functions";
 import SignOut from "../SignOut/SignOut";
+import * as S from "./ChatRom.styles";
+import { mdiArrowDownCircle } from "@mdi/js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC4I48BMsJ0sXj5LmPVSmWJHwwpZxSgyco",
@@ -26,7 +27,7 @@ export default function ChatRoom() {
   const [formValue, setFormValue] = useState("");
   const dummy = useRef() as React.MutableRefObject<HTMLInputElement>;
   const messagesRef = firestore.collection("messages");
-  const query = messagesRef.orderBy("createdAt").limit(10000);
+  const query = messagesRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
 
   const sendMessage = async (e: any) => {
@@ -43,18 +44,34 @@ export default function ChatRoom() {
     setFormValue("");
   };
 
+  const isVisible = useOnScreen(dummy);
   return (
     <S.Wrapper>
       <S.StyledDiv>
-        {" "}
+        <S.TitleWrapper>
+          {" "}
+          <S.styledImg
+            src="https://www.unibalsas.edu.br/wp-content/uploads/2017/01/si.png"
+            alt="logoSI"
+          ></S.styledImg>
+          <h2>Sistemas de Informação</h2>
+        </S.TitleWrapper>
         <SignOut />
-        <button
-          onClick={() => {
-            dummy.current.scrollIntoView({ behavior: "auto" });
-          }}
-        ></button>
       </S.StyledDiv>
+
       <S.Main>
+        <S.RollDownWrapper>
+          {" "}
+          {isVisible ? null : (
+            <S.ButtonRollDown
+              onClick={() => {
+                dummy.current.scrollIntoView({ behavior: "auto" });
+              }}
+            >
+              <Icon path={mdiArrowDownCircle} size={1} /> Mensagens recentes
+            </S.ButtonRollDown>
+          )}
+        </S.RollDownWrapper>
         {messages &&
           messages.map((msg: any) => (
             <ChatMessage key={msg.id} message={msg} />
