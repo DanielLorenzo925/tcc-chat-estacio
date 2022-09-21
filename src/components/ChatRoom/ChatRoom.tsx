@@ -10,15 +10,7 @@ import useOnScreen from "../../Shared/functions";
 import SignOut from "../SignOut/SignOut";
 import * as S from "./ChatRom.styles";
 import { mdiArrowDownCircle } from "@mdi/js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyC4I48BMsJ0sXj5LmPVSmWJHwwpZxSgyco",
-  authDomain: "tcc-projectestacio.firebaseapp.com",
-  projectId: "tcc-projectestacio",
-  storageBucket: "tcc-projectestacio.appspot.com",
-  messagingSenderId: "455311003095",
-  appId: "1:455311003095:web:0f2a77cb28d788fd7f8f92",
-};
+import { firebaseConfig } from "../../Shared/firebaseconfig";
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();

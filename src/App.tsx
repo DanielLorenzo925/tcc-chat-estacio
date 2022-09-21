@@ -7,6 +7,7 @@ import "firebase/firestore";
 import SignIn from "./components/SignIn/SignIn";
 import { useAuthState } from "react-firebase-hooks/auth";
 import ChatRoom from "./components/ChatRoom/ChatRoom";
+import { firebaseConfig } from "./Shared/firebaseconfig";
 
 const auth = firebase.auth();
 function App() {

@@ -3,16 +3,10 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import * as S from "./SignIn.styles";
-import { mdiGoogle } from "@mdi/js";
 
-firebase.initializeApp({
-  apiKey: "AIzaSyC4I48BMsJ0sXj5LmPVSmWJHwwpZxSgyco",
-  authDomain: "tcc-projectestacio.firebaseapp.com",
-  projectId: "tcc-projectestacio",
-  storageBucket: "tcc-projectestacio.appspot.com",
-  messagingSenderId: "455311003095",
-  appId: "1:455311003095:web:0f2a77cb28d788fd7f8f92",
-});
+import { firebaseConfig } from "../../Shared/firebaseconfig";
+
+const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 export default function SignIn() {
   const signInWithGoogle = () => {
